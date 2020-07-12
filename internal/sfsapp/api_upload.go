@@ -61,6 +61,11 @@ func (app *App) uploadTrack(r *http.Request) (fInfo models.FileInfo, err error) 
 	fInfo.MimeType = mime.String()
 	fInfo.FileExt = mime.Extension()
 
+	_, err = reader.Seek(0, 0) // rewind the reader to the beginning
+	if err != nil {
+		return fInfo, err
+	}
+
 	_, err = ioutil.ReadDir(fullPath)
 	if err != nil {
 		err := os.MkdirAll(fullPath, 0755)
